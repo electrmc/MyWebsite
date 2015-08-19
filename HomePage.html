@@ -3,27 +3,25 @@
 <head>
 <title>我的首页</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="./CssInit.css" />
 <style>	
 
+	#header{
+		height: 100px;
+	}
+	#body{
+		height: 1000px;
+		background-color: yellow;
+	}
 </style>
 </head>
 		<div id="header">
-			<img id = 'backgroundImage' src="StarrySky.jpeg" style='width=1000px;height=1000px;' />
+			
+		</div>
+
+		<div id="body">
+			
 		</div>
 	</body>
 </html>
-<script>
-	function changeBackground(){
-			var imgTemp = document.getElementById("backgroundImage");
-		console.log("imgTemp");
 
-		var w=window.innerWidth  || document.documentElement.clientWidth  || document.body.clientWidth;
-		var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-		imgTemp.width  = w;
-		imgTemp.height = h;
-		//imgTemp.width  = window.screen.width;
-		//imgTemp.height = window.screen.height;
-	}
-
-	changeBackground();
-</script>
