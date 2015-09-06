@@ -5,21 +5,54 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="stylesheet" href="./CssInit.css" />
 <style>	
-
 	#header{
-		height: 100px;
+		width: 120px;
+		height: 500px;
+		float: left;
+		background-color: green;
 	}
-	#body{
-		height: 1000px;
+	#bodyDiv{
+		width: 500px;
+		height: 500px;
 		background-color: yellow;
+		float: left;
+	}
+
+	#imageIcon{
+		height: 100px;
+		width: 100px;
+		border-radius: 50px;
+		margin: 10px;
+	}
+	.navigation__item{
+		width: 80px;
+		height: 50px;
+		border-radius: 10px;
+		background-color: gray;
+		margin: 10px;
 	}
 </style>
 </head>
 		<div id="header">
-			
-		</div>
-
-		<div id="body">
+			<img id="imageIcon" src="./IMG_0087.JPG" />	
+			<nav class="navigationBar">
+			<ul class="navigation">
+				<li class="navigation__item">
+					<a class="blog-button" title="访问博客" href="/#blog">博客</a>
+				</li>
+				<li class="navigation__item">
+					<a title="我的项目" target="_blank" href="http://project.onevcat.com">项目</a>
+				</li>
+				<li class="navigation__item">
+					<a title="了解更多关于我" href="http://about.onevcat.com/">关于</a>
+				</li>
+				<li class="navigation__item">
+					<a title="邮件订阅本站" href="http://eepurl.com/wNSkj">订阅</a>
+				</li>
+			</ul>
+			</nav>
+				</div>
+		<div id="bodyDiv">
 			
 		</div>
 	</body>
