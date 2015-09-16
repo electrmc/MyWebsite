@@ -5,9 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <!--<link rel="stylesheet" href="./CssInit.css" />-->
 <style>
-	#content{
-		width: 1000px;
-		height: 1000px;
+	img{
+		max-width: 55em;
 	}
 	p{
 		text-indent:2em；
@@ -17,7 +16,7 @@
 </style>
 <head>
 	<body>
-		<div id='content'>
+		<div id='container'>
 			<article>
 				<h1>关于App断点不停问题</h1>
 				<p>遇到过两次app断点不停的问题。搜过网上很多资料说如何解决，无非是在围绕Xcode设置的改变。修改了之后还是不行。后来找到网上一个解决方法是：选中Xcode的项目，在Finder中打开内容，删除*.pbxuser和*.mode1v3文件，重新打开project下断点。苦于没有找到*.pbxuser和*.mode1v3这两个文件，所以很苦恼，不知道如何改。后来用终端 find / -name *.pbxuser -print寻找整个电脑中的类似文件。终于找到了.<br>处理方式：需要在xx.xcodeproj项目中显示包内容，包开打开如下：</p>
@@ -43,7 +42,6 @@
 		
 	</body>
 </html>
-<!--script language=javascript src='./tools/screenSize.js'></script-->
-<script type="text/javascript" language=javascript>
+<!--<script language=javascript src='../tools/screenSize.js'></script>-->
+<script type="text/javascript" src="../tools/setContainerStyle.js"></script>
 
-</script>

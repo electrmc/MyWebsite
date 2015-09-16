@@ -1,4 +1,4 @@
-	function a(){
+	function screenSize(){
 document.write(
 "屏幕分辨率为："+screen.width+"*"+screen.height
 +"<br />"+
@@ -33,4 +33,4 @@ document.write(
 "屏幕可用工作区宽度："+window.screen.availWidth
 );
 }
-a();
+screenSize();
