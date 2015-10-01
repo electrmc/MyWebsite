@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title> 改变导航栏的颜色 </title>
+<style>
+    input{
+        width: 100em;
+    }
+</style>
+</head>
+<body>
+    <input id="demo1" />
+    <input id="demo2" />
+    This is test word
+</body>
+</html>
+
+<!-- <script type="text/javascript" src="../tools/test.js"></script> -->
+<script type="text/javascript" src="../tools/jquery.js"></script>
+
+<script type="text/javascript">
+$("#demo2").val('jquery can run');
+
+//../tools/FormateCode.php?fileName=filename
+$.ajax({
+    type: 'GET',//jquery 请求方式为 get
+    url: 'test.php?flag=formJS',
+    dataType: 'text',
+    cache: false,//是否缓存
+    dataType:'text',
+    data:{
+        a:'application'
+    },
+    beforeSend: function() {
+        $("#demo1").val('loading...')
+    },
+    success: function(data) {
+        $("#demo1").val('message:'+data)
+    },
+    error: function(data){
+        $("#demo1").val('error:'+data)
+    }
+});
+
+$.ajax({
+    type: 'GET',
+    timeout : 1000,
+    url : '../tools/FormateCode.php',
+    dataType : 'text',
+    cache : false,
+    beforeSend: function() {
+        $("#demo2").val('loading..')
+    },
+    success : function(data) {
+        $("#demo2").val('success')
+        // document.write(data)
+    },
+    error: function(data){
+        $("#demo2").val('error:'+data)
+    }
+});
+
+</script>
