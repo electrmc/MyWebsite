@@ -1,7 +1,7 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
 
-echo "<code>";
+$htmlStr = "<pre><code>";
 //此处的文件名需要根据传来的参数改动
 $fileName = "./AppDelegate.m";
 $file = fopen($fileName, "r");
@@ -12,14 +12,15 @@ while(!feof($file)) {
   	$str1 = findParameter($str1);
   	$str1 = findKeyword($str1);
   }
-  echo $str1;
+  $htmlStr .= "$str1";
 }
 fclose($file);
-echo "</code>";
+$htmlStr .="</code></pre>";
+echo $htmlStr;
 
 //------------------------------单行注释------------------------------
 function annotateSingleLineRegular($matches){
-  $str = '<span id="spanAnnoate">'.$matches[0].'</span>';
+  $str = '<span class="spanAnnoate">'.$matches[0].'</span>';
   if (count($matches[0]) > 0) {
     $isContiune = FALSE;
   }
@@ -32,7 +33,7 @@ function annotateSingleLine($str){
 //------------------------------参数和返回值------------------------------
 function findParameterRegular($matches){
   return preg_replace_callback("#\w*[ ]*[*]*#",function($matches){
-            return '<span id="spanParam">'.$matches[0].'</span>';
+            return '<span class="spanParam">'.$matches[0].'</span>';
         }, $matches[0]);
 }
 function findParameter($str){
@@ -42,10 +43,10 @@ function findParameter($str){
 
 //------------------------------关键字------------------------------
 function findKeywordRegular($matches){
-  return '<span id="spanKeyword">'.$matches[0].'</span>';
+  return '<span class="spanKeyword">'.$matches[0].'</span>';
 }
 function findKeyword($str){
-  return preg_replace_callback("#\bself\b|\bsuper\b#","findKeywordRegular", $str);
+  return preg_replace_callback("#\bself\b|\bsuper\b|\breturn\b#","findKeywordRegular", $str);
 }
 
 ?> 

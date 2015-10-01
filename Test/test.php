@@ -1,9 +1,13 @@
 <?php
+header("Content-type:text/html;charset=utf-8");
+
 /*
  * 注意：echo出的内容必须于ajax要求的数据类型匹配，否则就会出错
  * ajax的dataType最好不写，或者是写为text
  */
-header("Content-type:text/html;charset=utf-8");
+
+// include'test.js';//只是单纯地把js的代码复制到此，并不能执行
+
 // echo "this msg from php";//ajax要求的数据类型不能是json，至少是html
 
 $str1 = $_GET['flag'];
@@ -72,3 +76,9 @@ if (strcmp($str1, $strTemp) == 0) {
 // echo $str3;
 
 ?> 
+<script type="text/javascript">
+function test(){
+	alert("this is a test");
+}
+test();
+</script>
