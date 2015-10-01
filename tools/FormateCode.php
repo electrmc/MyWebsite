@@ -3,7 +3,7 @@ header("Content-type:text/html;charset=utf-8");
 
 $htmlStr = "<pre><code>";
 //此处的文件名需要根据传来的参数改动
-$fileName = "./AppDelegate.m";
+$fileName = $_GET['fileName'];
 $file = fopen($fileName, "r");
 while(!feof($file)) {
   $str = fgets($file);
@@ -20,21 +20,18 @@ echo $htmlStr;
 
 //------------------------------单行注释------------------------------
 function annotateSingleLineRegular($matches){
-  $str = '<span class="spanAnnoate">'.$matches[0].'</span>';
-  if (count($matches[0]) > 0) {
-    $isContiune = FALSE;
-  }
-  return $str;
+  return '<span class="spanAnnoate">'.$matches[0].'</span>';
 }
 function annotateSingleLine($str){
   return preg_replace_callback("#\/\/.*#","annotateSingleLineRegular",$str);
 }
 
 //------------------------------参数和返回值------------------------------
+function findParameterWord($matches){
+  return '<span class="spanParam">'.$matchess[0].'</span>';
+}
 function findParameterRegular($matches){
-  return preg_replace_callback("#\w*[ ]*[*]*#",function($matches){
-            return '<span class="spanParam">'.$matches[0].'</span>';
-        }, $matches[0]);
+  return preg_replace_callback("#\w*[ ]*[*]*#","findParameterWord", $matches[0]);
 }
 function findParameter($str){
   return preg_replace_callback("#\([ ]*\w+[ ]*[*]*[ ]*\)#","findParameterRegular", $str);
