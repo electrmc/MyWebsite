@@ -30,7 +30,7 @@ function annotateSingleLine($str){
 function findParameterWord($matches){
   return '<span class="spanParam">'.$matchess[0].'</span>';
 }
-function findParameterRegular($matches){
+function findParameterRegular($matches){//在阿里云服务器上不能支持匿名函数？
   return preg_replace_callback("#\w*[ ]*[*]*#","findParameterWord", $matches[0]);
 }
 function findParameter($str){
