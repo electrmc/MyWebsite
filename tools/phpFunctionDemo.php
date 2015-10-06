@@ -1,11 +1,13 @@
 <?php
 
 //---------------------文件路径---------------------
-echo __FILE__; // 取得当前文件的绝对地址，结果：/Library/WebServer/Documents/MyWebsite/tools/phpFunctionDemo.php
-echo "</br>";
-echo dirname(__FILE__); // 取得当前文件所在的绝对目录，结果：/Library/WebServer/Documents/MyWebsite/tools
-echo "</br>";
-echo dirname(dirname(__FILE__)); //取得当前文件的上一层目录名，结果：/Library/WebServer/Documents/MyWebsite 
+function printDocumentPath(){
+	echo __FILE__; // 取得当前文件的绝对地址，结果：/Library/WebServer/Documents/MyWebsite/tools/phpFunctionDemo.php
+	echo "</br>";
+	echo dirname(__FILE__); // 取得当前文件所在的绝对目录，结果：/Library/WebServer/Documents/MyWebsite/tools
+	echo "</br>";
+	echo dirname(dirname(__FILE__)); //取得当前文件的上一层目录名，结果：/Library/WebServer/Documents/MyWebsite 
+}
 
 //---------------------判断当前数据类型---------------------
 function whatType($data){

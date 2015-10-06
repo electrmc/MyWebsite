@@ -1,4 +1,5 @@
 <?php
+include 'phpFunctionDemo.php';
 header("Content-type:text/html;charset=utf-8");
 #/data/home/qxu1649340070/htdocs/ 服务器端根地址
 #/Library/WebServer/Documents/MyWebsite 本地根地址
@@ -32,10 +33,12 @@ function annotateSingleLine($str){
 
 //------------------------------参数和返回值------------------------------
 function findParameterWord($matches){
-  return '<span class="spanParam">'.$matchess[0].'</span>';
+  $strTemp = $matches[0];
+  return '<span class="spanParam">'.$strTemp.'</span>';
 }
 function findParameterRegular($matches){//在阿里云服务器上不能支持匿名函数？
-  return preg_replace_callback("#\w*[ ]*[*]*#","findParameterWord", $matches[0]);
+  $strTemp = $matches[0];
+  return preg_replace_callback("#\w*[ ]*[*]*#","findParameterWord", $strTemp);
 }
 function findParameter($str){
   return preg_replace_callback("#\([ ]*\w+[ ]*[*]*[ ]*\)#","findParameterRegular", $str);
