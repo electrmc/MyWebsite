@@ -6,7 +6,7 @@ header("Content-type:text/html;charset=utf-8");
 
 $htmlStr = "<pre><code>";
 $rootPath = dirname(dirname(__FILE__));
-//此处的文件名需要根据传来的参数改动
+//此处的文件名需要以MyWebsite为根目录发送，不能包含MyWebsite文件夹
 $fileName = $_GET['fileName'];
 $fileName = $rootPath.$fileName;
 $file = fopen($fileName, "r");

@@ -34,11 +34,12 @@
 		navImage.style.borderRadius = "40px";
 		navImage.style.width = "80px";
 		navImage.src = "../image/title.jpg";//js文件是html文件的路径，而非此js文件所在的路径
+		navImage.onerror = function(){navImage.src = "./image/title.jpg"};
 		var object = navbar.appendChild(navImage);//这里的object就是标签对
 		//标题
 		var title = document.createElement('p');
 		title.style.position = "relative";
-		title.style.left = "2em";
+		title.style.left = "1em";
 		title.style.float = "left";
 		title.innerHTML = "苗超的博客，记录路上遇到的点滴";
 		navbar.appendChild(title);
@@ -52,6 +53,3 @@
 	function backToHomepage(){
 		window.location = "http://localhost/MyWebsite/HomePage/HomePage.html";
 	}
-
-
-
