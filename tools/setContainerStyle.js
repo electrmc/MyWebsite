@@ -51,5 +51,7 @@
 	setNavbar();
 
 	function backToHomepage(){
-		window.location = "http://localhost/MyWebsite/HomePage/HomePage.html";
+		//本地地址：localhost
+		//服务器地址：www.mczone.com.cn
+		window.location = "http://www.mczone.com.cn";
 	}
