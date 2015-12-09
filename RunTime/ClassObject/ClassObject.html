@@ -9,7 +9,6 @@
         max-width: 30em;
     }
     p{
-        text-indent: 2em;
         font-family: verdana;
         font-size: 20px;
     }
@@ -21,10 +20,10 @@
 		<article>
 			<h1>Object和Class</h1>
             <p>
-            	本文的重点：OC中Class也是一个对象。</br></p>
-            	<p>需要解释的东西有：isa指针、类对象、metaClass、rootMetaClass、NSObject。<br/></p>
-            	<p>OC中，类本身也是一个对象。这句话刚开始听到时我也是很难理解，后来用了很长一段时间才算弄明白。
-                    究其源头要从NSObject的定义看起。 </p>
+            	本文的重点：OC中Class也是一个对象。</br>
+            	需要解释的东西有：isa指针、类对象、metaClass、rootMetaClass、NSObject。<br/>
+            	OC中，类本身也是一个对象。这句话刚开始听到时我也是很难理解，后来用了很长一段时间才算弄明白。
+                    究其源头要从NSObject的定义看起。
                 <div class="codeDiv" id="NSObject"></div>
             	可以看到这里有一个isa指针，它指向一个Class对象，这个就是类对象。想要清晰地了解其内部实现需要翻到C语言的结构体去一探究竟。下面就是苹果关于object的定义<br/>
             	<div class="codeDiv" id="StructObjc"></div>
@@ -42,12 +41,12 @@
                 <img src="./Image/ClassObject.png" /><br/>
                 对于isa指针：一个实例对象的isa指针指向自己的类对象一个objc_class结构体。类对象的isa指针指向元类对象，同样是一个objc_class的结构体。元类的isa指针指向根元类对象。根元类对象的isa指针指向自己。<br/>
                 对于super_class指针。类对象中的super_class指针指向父类的类对象。父类的类对象指针指向根类的类对象。根类的类对象指针指向nil。<br/>
+                <br/>
                 最后比较绕的是根元类和根类对象的isa和super_class：<br/>
                 根元类对象的super_class指针指向的根类对象。这样就保证了只存在一个根类对象。
                 根类对象的isa指针指向根元类，这样就保证至会存在一个根元类对象。
-                OC中一切对象皆继承自NSObject（除去NSProxy），那么图中的InstanceOfRootClass就是一个NSObject的实例对象，它的isa指针指向根类对象，同理它的元类对象就是根元类。因此可以说，根元类对象是继承自NSObject的。就此完满的保证了NSObject是一切对象的源头。</p>
-            <!-- </p> -->
-            <!-- <div class="codeDiv" id="code1"></div> -->
+                OC中一切对象皆继承自NSObject（除去NSProxy），那么图中的InstanceOfRootClass就是一个NSObject的实例对象，它的isa指针指向根类对象，同理它的元类对象就是根元类。因此可以说，根元类对象是继承自NSObject的。就此完满的保证了NSObject是一切对象的源头。
+            </p>
          	</article>
 	</div>
 </body>
@@ -56,34 +55,9 @@
 <script type='text/javascript' src='../../tools/setContainerStyle.js'></script>
 <script type="text/javascript" src="../../tools/FixCodeColor.js"></script>
 <script type="text/javascript" src="../../tools/jquery.js"></script>
-<!-- <script type="text/javascript" src="../../tools/InsertCode.js"></script> -->
-<script type='text/javascript'>
-var codeDivs = document.all ? document.all : document.getElementsByTagName('div');
-for ( var i = 0; i < codeDivs.length; i++ ) {
-    var oneCodeDiv = codeDivs[i]
-    if (oneCodeDiv.className == 'codeDiv') {
-        var divId = oneCodeDiv.id;
-        var codePath = '/Runtime/'+'ClassObject/'+'/Code/'+divId+'.m'
-        $.ajax({
-            type: 'GET',
-            url : 'http://localhost/MyWebsite/tools/FormateCode.php',
-            data : {
-                "filePath" : codePath,
-                "divId"    : divId,
-            },
-            dataType : 'json',
-            cache : false,
-            success : function(data) {
-            	// document.write(data)
-                var div = document.getElementById(data['divId'])      
-                div.innerHTML = data['htmlStr']
-                //获取数据后必须调用这两个方法
-                fixCodeColor()
-            },
-            error: function(data){
-                alert("load error")
-            }
-        });
-    }
-}
+<script type="text/javascript" src="../../tools/InsertCode.js"></script>
+<script type="text/javascript">
+    insertCode("/Runtime/ClassObject/Code/");
 </script>
+
+
