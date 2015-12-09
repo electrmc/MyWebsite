@@ -4,7 +4,8 @@
 2，必须包含：<link rel="stylesheet" href="../tools/cssInit.css" />
    它是用来初始化网页格式的
 3，每个网页都必须包含id为navbar的div和id为container的div
-4，如果网页中包含代码，那么需要包含以下两个js文件：
+4，如果网页中包含代码，那么需要包含以下三个js文件：
 	<script type="text/javascript" src="../tools/FixCodeColor.js"></script>
 	<script type="text/javascript" src="../tools/jquery.js"></script>
+	<script type="text/javascript" src="../tools/InsertCode.js"></script>
 	它是用来发请求和处理代码格式的。

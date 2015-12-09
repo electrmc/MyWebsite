@@ -38,25 +38,7 @@
 <script type="text/javascript" src="../tools/setContainerStyle.js"></script>
 <script type="text/javascript" src="../tools/FixCodeColor.js"></script>
 <script type="text/javascript" src="../tools/jquery.js"></script>
-
+<script type="text/javascript" src="../tools/InsertCode.js"></script>
 <script type="text/javascript">
-$.ajax({
-    type: 'GET',
-    url : '../tools/FormateCode.php',
-    data : {
-        fileName : '/EliminateStoryBoard/FinishLaunching.m',
-    },
-    dataType : 'html',
-    cache : false,
-    success : function(data) {
-        var x = document.getElementById("finishLaunch")
-        x.innerHTML = data
-        //获取数据后必须调用这两个方法
-        fixCodeColor() 
-        fixCodeDivStyle(x)
-    },
-    error: function(data){
-        alert("i am sorry, load error")
-    }
-});
+	insertCode("/EliminateStoryBoard/")
 </script>

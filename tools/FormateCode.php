@@ -7,9 +7,11 @@ header("Content-type:text/html;charset=utf-8");
 $htmlStr = "<pre><code>";
 $rootPath = dirname(dirname(__FILE__));
 //此处的文件名需要以MyWebsite为根目录发送，不能包含MyWebsite文件夹
-$fileName = $_GET['fileName'];
-$fileName = $rootPath.$fileName;
-$file = fopen($fileName, "r");
+$filePath = $_GET['filePath'];
+$filePath = $rootPath.$filePath;
+// echo "$filePath";
+// exit();
+$file = fopen($filePath, "r");
 while(!feof($file)) {
   $str = fgets($file);
   $str1 = annotateSingleLine($str);
@@ -21,7 +23,10 @@ while(!feof($file)) {
 }
 fclose($file);
 $htmlStr .="</code></pre>";
-echo $htmlStr;
+$divId = $_GET['divId'];
+$array['divId'] = $divId;
+$array['htmlStr'] = $htmlStr;
+echo json_encode($array);
 
 //------------------------------单行注释------------------------------
 function annotateSingleLineRegular($matches){

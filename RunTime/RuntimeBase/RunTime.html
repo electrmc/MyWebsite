@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="../tools/cssInit.css" />
+	<title>Runtime</title>
+</head>
+<body>
+	<div id="container">
+		<div id="navbar"></div>
+		<article>
+			<h1>RunTime</h1>
+            <p>iOS中runtime功能强大且常用。随着不断地学习，对其的理解也会越来越深入。本编文章首先说明runtime的基础知识，然后介绍runtime的使用。</br>最直观切入点就是OC独有消息发送。OC底层跑的是C语言，runtime即使用c语言运行的。因此，OC中方法调用即发送消息最终都要变为C语言代码执行。C语言中的方法执行是通过函数指针执行的，runtime机制完成的任务就是把消息发送转为函数指针。最简单的执行如下：
+            </p>
+            <div class="codeDiv" id="code1"></div>
+            <p>经过编译器后，就会变成</p>
+            <div class="codeDiv" id="code2"></div>
+            <p>如果方法有参数，那么将是：</p>
+            <div class="codeDiv" id="code3"></div>
+		</article>
+	</div>
+</body>
+</html>
+
+<script type='text/javascript' src='../tools/setContainerStyle.js'></script>
+<script type="text/javascript" src="../tools/FixCodeColor.js"></script>
+<script type="text/javascript" src="../tools/jquery.js"></script>
+<script type="text/javascript" src="../tools/InsertCode.js"></script>

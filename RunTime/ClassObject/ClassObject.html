@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="../../tools/cssInit.css" />
+ 	<title>Object和Class</title>
+<style>
+    img{
+        max-width: 30em;
+    }
+    p{
+        text-indent: 2em;
+        font-family: verdana;
+        font-size: 20px;
+    }
+</style>
+</head>
+<body>
+	<div id="container">
+		<div id="navbar"></div>
+		<article>
+			<h1>Object和Class</h1>
+            <p>
+            	本文的重点：OC中Class也是一个对象。</br></p>
+            	<p>需要解释的东西有：isa指针、类对象、metaClass、rootMetaClass、NSObject。<br/></p>
+            	<p>OC中，类本身也是一个对象。这句话刚开始听到时我也是很难理解，后来用了很长一段时间才算弄明白。
+                    究其源头要从NSObject的定义看起。 </p>
+                <div class="codeDiv" id="NSObject"></div>
+            	可以看到这里有一个isa指针，它指向一个Class对象，这个就是类对象。想要清晰地了解其内部实现需要翻到C语言的结构体去一探究竟。下面就是苹果关于object的定义<br/>
+            	<div class="codeDiv" id="StructObjc"></div>
+            	结构体objc_object就是OC中最基本的对象。其内部仅有一个isa指针，指向一个objc_class结构体。而objc_class是继承自objc_objetct的‘子类’。可以简单的理解为c语言中的一个单向链表。链表的起点是一个objc_object对象，中间的每一节都是一个objc_class对象直到结束。结束时链表的最后一节有两个结局：指向空，指向自己。其实看到后面就会发现实例对象、类对象、元类对象、根元类对象就像一个单链表，表尾指向了自己完成回路，而super_class这条链路最后指向了空。<br/>
+                <br/>
+            	暂时先不管这些对象是如何创建的，或者他们的作用，只看之间的关系。<br/>
+            	所谓实例对象就是内存中一段数据。当一个对象(例如TestObjc的实例对象)创建出来时，其isa指针必定要指向另一段内存，而这段内存就是一个objc_class的结构体，反映到OC中就是一个Class对象。至此，可以基本理解，类也是一个对象。<br/>
+                <br/>
+            	可以想到结构体objc_class中也有一个isa指针，那么此isa指针指向什么呢？它指向的是元类对象，其实也是一个objc_class结构体，就像链表又向下延伸了一节。既然是objc_class结构体，那么元类对象中的isa指针必定也指向一段内存区域，该区域存的则是一个根元类对象。根元类对象就是链表的结束。所以它的isa指针是指向自己的。<br/>
+                <br/>
+                到此可以看下面这张图了，清晰地表示了isa指针继承关系和superClass的继承关系。<br/>
+                这张图可以看做两条链路：<br/>
+                1，isa的“链路关系”。<br/>
+                2，superclass的“链路关系”。<br/>
+                <img src="./Image/ClassObject.png" /><br/>
+                对于isa指针：一个实例对象的isa指针指向自己的类对象一个objc_class结构体。类对象的isa指针指向元类对象，同样是一个objc_class的结构体。元类的isa指针指向根元类对象。根元类对象的isa指针指向自己。<br/>
+                对于super_class指针。类对象中的super_class指针指向父类的类对象。父类的类对象指针指向根类的类对象。根类的类对象指针指向nil。<br/>
+                最后比较绕的是根元类和根类对象的isa和super_class：<br/>
+                根元类对象的super_class指针指向的根类对象。这样就保证了只存在一个根类对象。
+                根类对象的isa指针指向根元类，这样就保证至会存在一个根元类对象。
+                OC中一切对象皆继承自NSObject（除去NSProxy），那么图中的InstanceOfRootClass就是一个NSObject的实例对象，它的isa指针指向根类对象，同理它的元类对象就是根元类。因此可以说，根元类对象是继承自NSObject的。就此完满的保证了NSObject是一切对象的源头。</p>
+            <!-- </p> -->
+            <!-- <div class="codeDiv" id="code1"></div> -->
+         	</article>
+	</div>
+</body>
+</html>
+
+<script type='text/javascript' src='../../tools/setContainerStyle.js'></script>
+<script type="text/javascript" src="../../tools/FixCodeColor.js"></script>
+<script type="text/javascript" src="../../tools/jquery.js"></script>
+<!-- <script type="text/javascript" src="../../tools/InsertCode.js"></script> -->
+<script type='text/javascript'>
+var codeDivs = document.all ? document.all : document.getElementsByTagName('div');
+for ( var i = 0; i < codeDivs.length; i++ ) {
+    var oneCodeDiv = codeDivs[i]
+    if (oneCodeDiv.className == 'codeDiv') {
+        var divId = oneCodeDiv.id;
+        var codePath = '/Runtime/'+'ClassObject/'+'/Code/'+divId+'.m'
+        $.ajax({
+            type: 'GET',
+            url : 'http://localhost/MyWebsite/tools/FormateCode.php',
+            data : {
+                "filePath" : codePath,
+                "divId"    : divId,
+            },
+            dataType : 'json',
+            cache : false,
+            success : function(data) {
+            	// document.write(data)
+                var div = document.getElementById(data['divId'])      
+                div.innerHTML = data['htmlStr']
+                //获取数据后必须调用这两个方法
+                fixCodeColor()
+            },
+            error: function(data){
+                alert("load error")
+            }
+        });
+    }
+}
+</script>
