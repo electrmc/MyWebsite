@@ -16,7 +16,7 @@ function insertCode(filePath){
             var codeAddr = filePath+divId+'.m'
             $.ajax({
                 type: 'GET',
-                url : 'http://www.mczone.com.cn/tools/FormateCode.php',
+                url : 'http://localhost/MyWebsite/tools/FormateCode.php',
                 data : {
                     "filePath" : codeAddr,
                     "divId"    : divId,
