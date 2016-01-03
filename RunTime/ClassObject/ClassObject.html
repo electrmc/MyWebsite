@@ -44,8 +44,13 @@
                 <br/>
                 最后比较绕的是根元类和根类对象的isa和super_class：<br/>
                 根元类对象的super_class指针指向的根类对象。这样就保证了只存在一个根类对象。
-                根类对象的isa指针指向根元类，这样就保证至会存在一个根元类对象。
-                OC中一切对象皆继承自NSObject（除去NSProxy），那么图中的InstanceOfRootClass就是一个NSObject的实例对象，它的isa指针指向根类对象，同理它的元类对象就是根元类。因此可以说，根元类对象是继承自NSObject的。就此完满的保证了NSObject是一切对象的源头。
+                根类对象的isa指针指向根元类，这样就保证只会存在一个根元类对象。
+                OC中一切对象皆继承自NSObject（除去NSProxy），那么图中的InstanceOfRootClass就是一个NSObject的实例对象，它的isa指针指向根类对象，同理它的元类对象就是根元类。因此可以说，根元类对象是继承自NSObject的。就此完满的保证了NSObject是一切对象的源头。<br>
+                <br>
+                PS:这里需要说明一下类对象什么时候创建的。<br>
+                类对象生成的是类似延迟加载的技术，是在<span style="color:green;">+(void)initialize</span>中实现的。因此对应任何一个类都会调用initialize方法。<br>
+                其实现与下面类似（摘自The Complete Friday Q&A_ Volume I ）：
+                <div class="codeDiv" id="Initialize"></div>
             </p>
          	</article>
 	</div>

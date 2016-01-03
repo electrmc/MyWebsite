@@ -1,0 +1,2 @@
+-  (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
+-  (void)forwardInvocation:(NSInvocation *)invocation
