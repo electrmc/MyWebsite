@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="../tools/cssInit.css" />
+ 	<title>使用NSProxy发送统计</title>
+<style>
+    img{
+        max-width: 30em;
+    }
+    p{
+        font-family: verdana;
+        font-size: 18px;
+    }
+</style>
+</head>
+<body>
+	<div id="container">
+		<div id="navbar"></div>
+		<article>
+			<h1>使用NSProxy发送统计</h1>
+            <p>
+                最近接到一个需求，要把程序中整个统计重新改版。以前的统计过于简单，不能满足产品和运营人员的分析。一直以来统计在我心中的都是很简单的，就是调用一个类方法发送一段字符串。最多在这个类方法的实现中额外再在要发送的字符串中拼接上诸如用户名，版本信息之类的全局信息（我相信大部分程序，这些信息都是全局性的，而且基本都是单例）。可是，接到需求时发现……需求有点复杂。因为同一条记录中不仅要包含当前页面中的全部信息，还要包含上一个页面的信息，有时还要包含下一个页面的信息。这就意味着要客户端要额外维护一份类似于view轨迹的东西。同时，客户端要担负为网页发送统计，当用户点击了客户端内网页的某个按钮时，客户端也要发送统计。<br>
+            </p>
+            <p>
+                其实在接到需求前，整个统计的改版我是想使用AOF的方式。这样，发送统计的代码就可以从业务逻辑的代码中剥离出来，如果做到的好，埋点的字段还可以做成可配置的，这岂不是很好……可惜现实是残酷的，因为需求中牵扯到客户端发统计时要处理一些逻辑，因此，使用AOF发送统计的方式就只能放弃了。关于AOP埋点网上教程比较多，这里贴几个看过的：
+                <a href="http://limboy.me/ios/2015/09/09/ios-analytics.html">iOS打点那些事</a>
+                <a href="http://blog.csdn.net/yanghua_kobe/article/details/8395535">关于AOP开源库的介绍</a>。
+            </p>
+            <p>
+                不过这里并不想说view轨迹是如何维护的，虽然这项工作占用了我实现需求的近一半的时间。但只要理清逻辑，考虑的情景周全问题不会太大。本片文章只说明几个自己认为值得记录的两点：1，通过消息转发拼接字符串；2依赖注入完成获得不同view的属性。
+            </p>
+
+            <h4>1 通过消息转发完成统计字符串拼接</h4>
+            <p>
+                统计一般会定义一个统计类，这个类中定义一堆的属性。每次发统计时，把这一堆属性赋值，然后把属性拼接起来，发送出去。拼接字符串时最容易的方法就是用长串if-else来拼接，可以想象会有多么长的一段if-else代码。而且他们功能都一样，无非就是判断这个字段有没有值，然后再把这个值拼接到固定的位置。这样会造成后期维护很麻烦，加个字段，改个字段都要动这段代码。而且还存在一个问题，不同类型的统计发送的字段是不一样的，比如客户端A类型统计可能只需要发送统计名，B类型的统计需要发送统计名、用户名、版本号。C类型的统计可能发送统计名、网页名等等。这样在拼接字符串时就会有大量的重复代码。下面的代码就是这样实现的。
+            </p>
+                <div class="codeDiv" id="PackageLogSimple"></div>
+            <p>
+                为了不要这些重复的代码，采用的方式是把所有的字段放到字典中，当发送时，按照固定的顺序依次从字典中取值然后拼接起来发送出去。这样，只需要规定一下该类型统计从字典中的取值顺序就可以了。问题在于如何把属性值放到字典中。具体的代码如下。这段代码主要完成的是把属性的setter和getter方法转成字典的设值和取值，完成把属性值放到字典中。当然这里的属性必须是@dynamic类型。
+            </p>
+                <div class="codeDiv" id="SendLog"></div>
+            <p>
+                使用起来也方便，只要告诉这个实例对象符合某个统计协议，直接对该协议中的属性赋值即可。属性的操作会被转发至对字典的操作。这样，不同埋点类型只需要添加一个协议就可以，省去大量重复的代码，修改起来也很方便。下面代码既是使用上述方法发送统计的例子。
+            </p>
+                <div class="codeDiv" id="SendLogPractice"></div>
+            <p>
+                当然，这里只说了思想，具体应用起来还是有很多工作的，毕竟发送埋点不可能每次都要对这么多属性赋值，需要尽量封装起来，在业务逻辑中占用代码越少越好。
+            </p>
+            <h4>2 通过依赖注入拼接页面的属性</h4>
+            <p>
+                需求总是很难想象的。发送埋点时有个需求是，当页面显示时，需要把该页面中的所有特征发送给后台。举个例子，炒股软件中肯定会有分时图，会分A股和港美股。页面中肯定还会有其他信息，比如盘口之类的。产品希望能够把页面中的分时图的类型，分时图上的指标信息，盘口的诸多特征信息一起发送过去。这样，分析起用户行为很方便。<br/>
+                但是，这个功能该如何完成？！难点在于，一个复杂的页面不同模块肯定是分开的，比如要显示分时，viewController只会通知分时模块把这只股票的分时显示出来。至于怎么显示，是分时模块内部的事情，对外是不可知的。当然分时的特征信息对外也是不可见的。那么，该如何在viewController中得到这些信息。<br/>
+                1，用代理。分时显示完成后通过代理把信息返回给viewController。但是，分时里面也分小模块。分时设完代理后还有盘口，还有很多其他模块。难不成层层代理，各个代理。将会非常麻烦，逻辑线也会巨长。<br/>
+                2，用单例。在各个子模块中完成任务后把要记录的东西存到单例中。但是，单例是全局的，存了就要维护，全局维护起来，必定bug不断。<br/>
+                3，用NSProxy。用依赖注入的方式完成。这也是我最终采用的方式。<br/>
+                主要思想既是：规定用于返回子模块特性信息的协议，将实现这些协议的对象注册到一个弱引用的字典中。每次用NSProxy对象调用协议时，会从字典中寻找实现该协议的对象，执行协议方法。代码具体如下：
+            </p>
+                <div class="codeDiv" id="NSProxyViewProperty"></div>
+            <p>
+                这里有几个主要地方：保存实现协议对象的字典要是弱引用的。这里用的是MapTable，其key值是copy的，value是weak的。否则会引起注册到该字典中的对象无法释放。其次，为了保证程序不会闪退，引入了LogError对象，当调用没有实现协议的对象时，打印日志。<br>
+                具体的使用如下:
+            </p>
+                <div class="codeDiv" id="NSProxyViewPropertyPractice"></div>
+            <p>
+                首先在把实现该协议方法的SpecialViewModule注册到ViewPropertiesProxy中。在viewController中要得到该属性时，用单例调用已注册的协议方法。<br/>
+            </p>
+                以下是看过的关于此的好文：<br/>
+                <a href="http://tutuge.me/2015/02/16/%E5%88%A9%E7%94%A8NSProxy%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91-%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82%E8%AE%BE%E8%AE%A1-%E5%8E%9F%E5%88%9B/"> NSProxy实现网络接口层设计</a><br/>
+                <a href="http://blog.sunnyxx.com/2014/08/24/objc-duck/">鸭子类型</a>
+         	</article>
+	</div>
+</body>
+</html>
+
+<script type='text/javascript' src='../tools/setContainerStyle.js'></script>
+<script type="text/javascript" src="../tools/FixCodeColor.js"></script>
+<script type="text/javascript" src="../tools/jquery.js"></script>
+<script type="text/javascript" src="../tools/InsertCode.js"></script>
+<script type="text/javascript">
+    insertCode("/SendLogInNSProxy/Code/");
+</script>
+
+
