@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="../tools/cssInit.css" />
+	<title>编程小结</title>
+</head>
+<body>
+	<div id="container">
+		<div id="navbar"></div>
+		<article>
+			<h1>编程小结</h1>
+			<font size="5">--在这里，攒一些小麦</font>
+			<h3>逻辑-功能单一性</h3>
+			<p>最近讨论时提到了实习生写代码时经常会不注意复用，会把很多功能放到一起，因为这样“方便”。对于“以后用，怎么办”这类问题一般都是不在意的。其实，这是一个功能不单一，逻辑不清晰的问题。逻辑是以指数增长的，逻辑还会生逻辑。</p>
+			<p>逻辑是成指数增长的。一个方法中有两个判断逻辑组合起来就有四种情景，再加一层判断就会是八种……试想，以后每次遇到这个方法，那是多么头痛！同样的，我们在维护代码时，如果在已有的方法中“顺便”添加点额外的操作，那么这个方法一下子就会变得复杂的多的多！！日后维护到这里就必须考虑由它引起的所有情景。当然，我们不能保证，这个额外的处理不会影响到其他地方。如果影响到了就是bug。这种问题处理起来通常进行的是“特殊处理”，就是再加一个额外的处理来埋前人留下的坑。加个特殊处理，就是又加了一层逻辑。相当于一个逻辑“生出了”另一个逻辑。最后，整个代码就会是一坨*。这样的代码经过了测试，应用到市场，以后就没人能改了。谁也不知道里面有多少逻辑，更不能保证把改后的代码比现在更可靠。一坨坨的“改不动”就这么来的吧。因此，代码从设计到改动一再要求功能单一性！</p>
+			<p>单例之所以被人骂估计也是这个问题。因为，全局的就意味着什么地方都可以改。一次改动就是整套逻辑又加了一级。很可能从八中情景一下子变成了十六种。这岂不是给自己挖大坑！与这类似的，还有重复造轮子。因为读前人的代码，很烦。这么复杂的逻辑都谁写的，我得改改。这一改，通常是把自己改死，也会拖累整个项目造成延期！除非，能保证改出来的代码必定可靠！</p>
+			<h3>协议-接口编程</h3>
+			<p>如果小范围的功能单一性是保证方法逻辑清晰的话，那么整个框架逻辑清晰很可能就要靠接口编程了。iOS中通常用的就是协议。业务逻辑注重怎么完成，就是活怎么分。每个类都有自己的功能。只要能提供我的功能就可以，至于实现，那是不用管的。swift中的泛型也类似，都是注重完成的功能。</p>
+		</article>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript" src="../tools/setContainerStyle.js"></script>
+<script type="text/javascript" src="../tools/FixCodeColor.js"></script>
+<script type="text/javascript" src="../tools/jquery.js"></script>
+<script type="text/javascript" src="../tools/InsertCode.js"></script>
+
