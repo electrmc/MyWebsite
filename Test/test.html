@@ -11,34 +11,27 @@
 </head>
 <body>
     <input id="demo1" />
-        <input id="demo2" />
+    <input id="demo2" />
     <div class='codeDiv' id="codeId"></div>
     This is test word
 </body>
 </html>
 
-<script type="text/javascript" src="../tools/FixCodeColor.js"></script>
 <script type="text/javascript" src="../tools/jquery.js"></script>
 <script type="text/javascript">
+
 $.ajax({
-    type: 'GET',
-    url : '../tools/FormateCode.php',
+    type: 'POST',
+    url : './test.php',
     data : {
-        fileName : '/Test/AppDelegate.m',
+        postFlag : 'postMethod',
     },
-    dataType : 'html',
     cache : false,
     beforeSend: function() {
         $("#demo2").val('loading...')
     },
     success : function(data) {
-        $("#demo2").val('success')
-        // document.write(data) //执行了这句后，界面中的元素都将消失
-        var x = document.getElementById("codeId")
-        x.innerHTML = data;
-        //获取数据后必须调用这两个方法
-        fixCodeColor(); 
-        fixCodeDivStyle();
+        $("#demo2").val('message:'+data)
     },
     error: function(data){
         $("#demo2").val('error:'+data)
@@ -47,12 +40,10 @@ $.ajax({
 
 $.ajax({
     type: 'GET',//jquery 请求方式为 get
-    url: 'test.php?flag=formJS',
-    dataType: 'text',
+    url: './test.php',
     cache: false,//是否缓存
-    dataType:'text',
     data:{
-        a:'application'
+        getFlag:'getMethod'
     },
     beforeSend: function() {
         $("#demo1").val('loading...')

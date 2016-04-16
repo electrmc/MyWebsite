@@ -1,5 +1,6 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
+echo "this is a test   ";
 
 /*
  * 注意：echo出的内容必须于ajax要求的数据类型匹配，否则就会出错
@@ -10,8 +11,13 @@ header("Content-type:text/html;charset=utf-8");
 
 // echo "this msg from php";//ajax要求的数据类型不能是json，至少是html
 
-$str1 = $_GET['flag'];
-whatType($str1);
+$str1 = $_GET['getFlag'];
+echo "$str1";
+$str2 = $_POST['postFlag'];
+echo "$str2";
+$str3 = file_get_contents("php://input");
+echo "$str3";
+exit();
 
 function whatType($data){
 	if (isset($data)) {
